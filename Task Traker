@@ -1,0 +1,84 @@
+import json
+import os
+
+FILENAME = "tasks.json"
+
+def load_tasks():
+    if os.path.exists(FILENAME):
+        with open(FILENAME, "r") as file:
+            return json.load(file)
+    return []
+
+def save_tasks(tasks):
+    with open(FILENAME, "w") as file:
+        json.dump(tasks, file, indent=4)
+
+def show_tasks(tasks):
+    if not tasks:
+        print("\nBelum ada tugas. ")
+        return
+    print("\nDaftar Tugas : ") 
+    for idx, task in enumerate(tasks, 1):
+        status = "[Selesai]" if task["Done"] else "[Belum]"
+        print(f"{idx}. {task['title']} {status}")
+
+def add_task(tasks):
+    title = input("Masukan nama tugas : ").strip()
+    if title:
+        tasks.append({"title": title, "Done": False})
+        save_tasks(tasks)
+        print("Tugas berhasil ditambahkan!")
+
+def mark_done(tasks):
+    show_tasks(tasks)
+    try:
+        idx = int(input("Nomor tugas yang selesai : ")) - 1
+        if 0 <= idx < len(tasks):
+            tasks[idx]["Done"] = True
+            save_tasks(tasks)
+            print("Tugas ditandai selesai!")
+        else:
+            print("Nomor tidak valid.")
+    except ValueError:
+        print("Masukan angka yang benar.")
+
+def delete_task(tasks):
+    show_tasks(tasks)
+    try:
+        idx = int(input("Nomor tugas yang ingin dihapus : ")) - 1
+        if 0 <= idx < len(tasks):
+            removed = tasks.pop(idx)
+            save_tasks(tasks)
+            print(f"Tugas '{removed['title']}' dihapus.")
+        else:
+            print("Nomor tidak valid.")
+    except ValueError:
+        print("Masukan angka yang benar.")
+
+def main():
+    tasks = load_tasks()
+    while True:
+        print("\n--- MENU TAKS TRACKER ---")
+        print("1. Lihat Tugas")
+        print("2. Tambah Tugas")
+        print("3. Tandai Selesai")
+        print("4. Hapus Tugas")
+        print("5. Keluar")
+
+        choice = input("Pilih menu (1-5) : ").strip()
+        if choice == "1":
+            show_tasks(tasks)
+        elif choice == "2":
+            add_task(tasks)
+        elif choice == "3":
+            mark_done(tasks)
+        elif choice == "4":
+            delete_task(tasks)
+        elif choice == "5":
+            print("Sampai Jumpa!")
+            break
+        else:
+            print("Pilihan tidak valid, coba lagi.")
+
+if __name__ == "__main__":
+    main()
