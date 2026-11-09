@@ -2,11 +2,11 @@
 
 Membantu untuk mentraking tugas tugas anda
 
-##FEATURES
+## FEATURES
 -Lihat tugas
 -Tambah tugas
 -Tandai tugas selesai
 -Hapus tugas
 
-##BAHASA PEMOGRAMAN
+## BAHASA PEMOGRAMAN
 -python
